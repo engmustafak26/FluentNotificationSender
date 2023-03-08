@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentNotificationSender", "FluentNotificationSender.csproj", "{CA99B66A-8591-40C8-BBC8-2614B20F0F24}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA99B66A-8591-40C8-BBC8-2614B20F0F24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA99B66A-8591-40C8-BBC8-2614B20F0F24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA99B66A-8591-40C8-BBC8-2614B20F0F24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA99B66A-8591-40C8-BBC8-2614B20F0F24}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F87AE6B6-689B-4D3D-A1D7-C4B78FB52F75}
+	EndGlobalSection
+EndGlobal

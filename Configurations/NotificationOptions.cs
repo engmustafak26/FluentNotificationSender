@@ -10,9 +10,10 @@ namespace FluentNotificationSender.Configurations
 {
     public class NotificationOptions
     {
-        private const string SettingSection = "TechnoWays.Notification";
-        public NotificationMethodOptions<EmailVendor> EmailOptions { get; set; }
-        public NotificationMethodOptions<SMSVendor> SMSOptions { get; set; }
+        private const string SettingSection = "FluentNotification";
+        public NotificationMethodOptions<EmailVendor> EmailOptions { get; internal set; }
+        public NotificationMethodOptions<SMSVendor> SMSOptions { get; internal set; }
+        public int RetryCount { get; internal set; }
         internal IEnumerable<INotificationMethod> GetAllNotificationMethods(Func<INotificationMethod, bool> where = null)
         {
             var emailVendors = EmailOptions?.Vendors ?? Enumerable.Empty<EmailVendor>();

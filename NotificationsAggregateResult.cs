@@ -18,8 +18,8 @@ namespace FluentNotificationSender
             RequestedOn = requestOn;
             ResponseOn = DateTime.Now;
             TotalNotifications = notificationResults.Length;
-            SuccessRate = (float)notificationResults.Count(r => r.IsSuccess) / notificationResults.Count() * 100;
-            FailRate = (float)notificationResults.Count(r => !r.IsSuccess) / notificationResults.Count() * 100;
+            SuccessRate = (float)notificationResults.Count(r => r.IsSuccess) / (notificationResults.Any() ? notificationResults.Count() : 1) * 100;
+            FailRate = (float)notificationResults.Count(r => !r.IsSuccess) / (notificationResults.Any() ? notificationResults.Count() : 1) * 100;
             NotificationResults = notificationResults;
         }
 

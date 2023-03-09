@@ -15,12 +15,14 @@ namespace FluentNotificationSender
         public TimeSpan ElapsedTime => ResponseOn.Subtract(RequestedOn);
         public string ResponseMessage { get; private set; }
         public Vendor VendorInfo { get; private set; }
+        public string VendorType { get; private set; }
         public Exception Exception { get; private set; }
 
         private NotificationResult(Vendor vendor, DateTime requestOn, string responseMessage = null)
         {
             IsSuccess = true;
             VendorInfo = vendor;
+            VendorType = VendorInfo.GetType().Name;
             RequestedOn = requestOn;
             ResponseOn = DateTime.Now;
             ResponseMessage = responseMessage;
@@ -29,6 +31,7 @@ namespace FluentNotificationSender
         {
             IsSuccess = false;
             VendorInfo = vendor;
+            VendorType = VendorInfo.GetType().Name;
             RequestedOn = requestOn;
             ResponseOn = DateTime.Now;
             Exception = exception;

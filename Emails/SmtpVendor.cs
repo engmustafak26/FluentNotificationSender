@@ -56,8 +56,11 @@ namespace FluentNotificationSender.Emails
                 foreach (var to in message.To)
                     mailMessage.To.Add(to);
 
-                foreach (var cc in message.CC ?? Enumerable.Empty<string>())
-                    mailMessage.CC.Add(cc);
+                if (message.CC != null && message.CC.Any())
+                {
+                    foreach (var cc in message.CC)
+                        mailMessage.CC.Add(cc);
+                }
 
                 if (message.Attachments != null)
                 {

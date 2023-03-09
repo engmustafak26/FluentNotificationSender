@@ -14,15 +14,15 @@ using FluentNotificationSender.SMS;
 
 namespace FluentNotificationSender
 {
-    internal class NotificationService : INotificationService
+    internal class FluentNotificationService : IFluentNotificationService
     {
-        public NotificationService(NotificationOptions options)
+        public FluentNotificationService(NotificationOptions options)
         {
             _originalOptions = Options = options;
         }
 
         [JsonConstructor]
-        public NotificationService(NotificationOptions options, bool isFromSerializationCall)
+        public FluentNotificationService(NotificationOptions options, bool isFromSerializationCall)
         {
             Options = options;
         }
@@ -71,34 +71,34 @@ namespace FluentNotificationSender
             return notificationResults;
         }
 
-        public INotificationService WithEmail(EmailVendor emailVendor, EmailMessage message)
+        public IFluentNotificationService WithEmail(EmailVendor emailVendor, EmailMessage message)
         {
             var notification = this.DeepClone();
             emailVendor.SafeAdd(message);
-            notification.Options.EmailOptions.SafeAddActiveVendor(emailVendor);
+            notification?.Options?.EmailOptions?.SafeAddActiveVendor(emailVendor);
             return notification;
         }
 
-        public INotificationService WithEmail(EmailMessage message)
+        public IFluentNotificationService WithEmail(EmailMessage message)
         {
             var notification = this.DeepClone();
-            notification.Options.EmailOptions.ActiveVendors.FirstOrDefault().SafeAdd(message);
+            notification?.Options?.EmailOptions?.ActiveVendors?.FirstOrDefault()?.SafeAdd(message);
             return notification;
         }
 
 
-        public INotificationService WithSMS(SMSVendor smsVendor, SMSMessage message)
+        public IFluentNotificationService WithSMS(SMSVendor smsVendor, SMSMessage message)
         {
             var notification = this.DeepClone();
             smsVendor.SafeAdd(message);
-            notification.Options.SMSOptions.SafeAddActiveVendor(smsVendor);
+            notification?.Options?.SMSOptions?.SafeAddActiveVendor(smsVendor);
             return notification;
         }
 
-        public INotificationService WithSMS(SMSMessage message)
+        public IFluentNotificationService WithSMS(SMSMessage message)
         {
             var notification = this.DeepClone();
-            notification.Options.SMSOptions.ActiveVendors.FirstOrDefault().SafeAdd(message);
+            notification?.Options?.SMSOptions?.ActiveVendors?.FirstOrDefault()?.SafeAdd(message);
             return notification;
         }
 

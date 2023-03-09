@@ -27,14 +27,10 @@ namespace FluentNotificationSender.Emails
             Attachments = attachments;
             IsHtmlBody = isHtmlBody;
         }
-        public EmailMessage(IEnumerable<string> to, IEnumerable<string> cc, string subject, string body, EmailMessageAttachment[] attachments)
-        {
-            To = to;
-            CC = cc;
-            Subject = subject;
-            Body = body;
-            Attachments = attachments;
-        }
+        public EmailMessage(IEnumerable<string> to, IEnumerable<string> cc, string subject, string body, EmailMessageAttachment[] attachments) : this(to, cc, subject, body, false, attachments)
+        { }
+        public EmailMessage(IEnumerable<string> to, string subject, string body, EmailMessageAttachment[] attachments) : this(to, null, subject, body, false, attachments)
+        { }
 
 
         public EmailMessage(IEnumerable<string> to, string subject, string body) : this(to, null, subject, body, false, null) { }

@@ -10,16 +10,16 @@ using FluentNotificationSender.SMS;
 
 namespace FluentNotificationSender.Interfaces
 {
-    public interface INotificationService
+    public interface IFluentNotificationService
     {
         IEnumerable<INotificationMethod> GetNotificationMethods(Func<INotificationMethod, bool> where = null);
         Task<NotificationsAggregateResult> SendAsync();
         void SendAsync(bool isFireAndForget);
-        INotificationService WithEmail(EmailVendor emailVendor, EmailMessage message);
-        INotificationService WithEmail(EmailMessage message);
+        IFluentNotificationService WithEmail(EmailVendor emailVendor, EmailMessage message);
+        IFluentNotificationService WithEmail(EmailMessage message);
 
-        INotificationService WithSMS(SMSVendor smsVendor, SMSMessage message);
-        INotificationService WithSMS(SMSMessage message);
+        IFluentNotificationService WithSMS(SMSVendor smsVendor, SMSMessage message);
+        IFluentNotificationService WithSMS(SMSMessage message);
 
         //INotificationService WithWeb(EmailVendor emailVendor, EmailMessage message);
         //INotificationService WithWeb(EmailMessage message);

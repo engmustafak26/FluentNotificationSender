@@ -9,6 +9,7 @@ namespace FluentNotificationSender.Configurations
 {
     internal class ConfigurationSettings
     {
+        public int RetryCount { get; internal set; }
         public EmailConfiguration Email { get; set; }
         public SMSConfiguration SMS { get; set; }
 

@@ -16,10 +16,10 @@ namespace FluentNotificationSender.Extensions
             NotificationOptions options = new NotificationOptions();
             configure(options);
 
-            var descriptor = services.FirstOrDefault(s => s.ServiceType == typeof(Func<NotificationOptions, INotificationService>));
+            var descriptor = services.FirstOrDefault(s => s.ServiceType == typeof(Func<NotificationOptions, IFluentNotificationService>));
             if (descriptor != null) services.Remove(descriptor);
-            services.AddSingleton((Func<NotificationOptions, INotificationService>)(options => new NotificationService(options)));
-            services.AddSingleton(typeof(INotificationService), services => services.GetRequiredService<Func<NotificationOptions, INotificationService>>()(options));
+            services.AddSingleton((Func<NotificationOptions, IFluentNotificationService>)(options => new FluentNotificationService(options)));
+            services.AddSingleton(typeof(IFluentNotificationService), services => services.GetRequiredService<Func<NotificationOptions, IFluentNotificationService>>()(options));
 
             return services;
         }

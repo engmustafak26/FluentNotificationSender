@@ -3,17 +3,18 @@ using System.Linq;
 
 namespace FluentNotificationSender
 {
-    public class NotificationsAggregateResult
+    public class FluentNotificationsAggregateResult
     {
         public readonly float SuccessRate;
         public readonly float FailRate;
         public readonly int TotalNotifications;
         public readonly DateTime RequestedOn;
         public readonly DateTime ResponseOn;
-        public readonly NotificationResult[] NotificationResults;
         public TimeSpan ElapsedTime => ResponseOn.Subtract(RequestedOn);
 
-        public NotificationsAggregateResult(DateTime requestOn, NotificationResult[] notificationResults)
+        public readonly FluentNotificationResult[] NotificationResults;
+
+        public FluentNotificationsAggregateResult(DateTime requestOn, FluentNotificationResult[] notificationResults)
         {
             RequestedOn = requestOn;
             ResponseOn = DateTime.Now;

@@ -7,18 +7,20 @@ using FluentNotificationSender.Abstractions;
 
 namespace FluentNotificationSender
 {
-    public class NotificationResult
+    public class FluentNotificationResult
     {
         public bool IsSuccess { get; private set; }
         public DateTime RequestedOn { get; private set; }
         public DateTime ResponseOn { get; private set; }
         public TimeSpan ElapsedTime => ResponseOn.Subtract(RequestedOn);
-        public string ResponseMessage { get; private set; }
-        public Vendor VendorInfo { get; private set; }
         public string VendorType { get; private set; }
+        public Vendor VendorInfo { get; private set; }
+        public string ResponseMessage { get; private set; }
+   
+  
         public Exception Exception { get; private set; }
 
-        private NotificationResult(Vendor vendor, DateTime requestOn, string responseMessage = null)
+        private FluentNotificationResult(Vendor vendor, DateTime requestOn, string responseMessage = null)
         {
             IsSuccess = true;
             VendorInfo = vendor;
@@ -27,7 +29,7 @@ namespace FluentNotificationSender
             ResponseOn = DateTime.Now;
             ResponseMessage = responseMessage;
         }
-        private NotificationResult(Vendor vendor, DateTime requestOn, Exception exception)
+        private FluentNotificationResult(Vendor vendor, DateTime requestOn, Exception exception)
         {
             IsSuccess = false;
             VendorInfo = vendor;
@@ -36,13 +38,13 @@ namespace FluentNotificationSender
             ResponseOn = DateTime.Now;
             Exception = exception;
         }
-        public static NotificationResult Success(Vendor vendor, DateTime requestOn, string responseMessage = null)
+        public static FluentNotificationResult Success(Vendor vendor, DateTime requestOn, string responseMessage = null)
         {
-            return new NotificationResult(vendor, requestOn, responseMessage);
+            return new FluentNotificationResult(vendor, requestOn, responseMessage);
         }
-        public static NotificationResult Fail(Vendor vendor, DateTime requestOn, Exception exception)
+        public static FluentNotificationResult Fail(Vendor vendor, DateTime requestOn, Exception exception)
         {
-            return new NotificationResult(vendor, requestOn, exception);
+            return new FluentNotificationResult(vendor, requestOn, exception);
         }
     }
 }

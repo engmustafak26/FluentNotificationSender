@@ -13,7 +13,7 @@ namespace FluentNotificationSender.Abstractions
         private protected Vendor()
         {
         }
-        internal abstract Task<NotificationResult>[] SendAsync();
+        internal abstract Task<FluentNotificationResult>[] SendAsync();
 
         [JsonIgnore]
         internal bool UseAsDefault { get; set; }

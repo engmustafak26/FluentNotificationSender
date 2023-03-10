@@ -16,7 +16,7 @@ namespace FluentNotificationSender.Abstractions
         {
         }
 
-        internal abstract override Task<NotificationResult>[] SendAsync();
+        internal abstract override Task<FluentNotificationResult>[] SendAsync();
 
         [JsonProperty]
         internal List<SMSMessage> Messages { get; set; }

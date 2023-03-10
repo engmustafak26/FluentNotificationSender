@@ -28,9 +28,9 @@ namespace FluentNotificationSender.SMS
         public string AppSid { get; set; }
         public string SenderID { get; set; }
 
-        internal override Task<NotificationResult>[] SendAsync()
+        internal override Task<FluentNotificationResult>[] SendAsync()
         {
-            var notificationResults = new Task<NotificationResult>[Messages.Count];
+            var notificationResults = new Task<FluentNotificationResult>[Messages.Count];
 
             for (int i = 0; i < Messages.Count; i++)
             {
@@ -49,9 +49,9 @@ namespace FluentNotificationSender.SMS
                     if (r.IsCompletedSuccessfully)
                     {
                         string response = await (await r).Content.ReadAsStringAsync();
-                        return NotificationResult.Success(vendor, requestOn, response);
+                        return FluentNotificationResult.Success(vendor, requestOn, response);
                     }
-                    return NotificationResult.Fail(vendor, requestOn, r.Exception);
+                    return FluentNotificationResult.Fail(vendor, requestOn, r.Exception);
 
                 }).ContinueWith(r => r.Result.Result);
             }

@@ -11,6 +11,7 @@ using FluentNotificationSender.Emails;
 using FluentNotificationSender.Extensions;
 using FluentNotificationSender.Interfaces;
 using FluentNotificationSender.SMS;
+using FirebaseAdmin.Messaging;
 
 namespace FluentNotificationSender
 {
@@ -34,13 +35,13 @@ namespace FluentNotificationSender
 
         public IEnumerable<INotificationMethod> GetNotificationMethods(Func<INotificationMethod, bool> where = null) => Options.GetAllNotificationMethods(where);
 
-        public async Task<NotificationsAggregateResult> SendAsync()
+        public async Task<FluentNotificationsAggregateResult> SendAsync()
         {
             var requestOn = DateTime.Now;
             var notificationResults = Send();
             await Task.WhenAll(notificationResults).ConfigureAwait(false);
 
-            return new NotificationsAggregateResult(requestOn, notificationResults.Select(r => r.Result).ToArray());
+            return new FluentNotificationsAggregateResult(requestOn, notificationResults.Select(r => r.Result).ToArray());
         }
 
         public void SendAsync(bool isFireAndForget)
@@ -48,9 +49,9 @@ namespace FluentNotificationSender
             _ = Send();
         }
 
-        private List<Task<NotificationResult>> Send()
+        private List<Task<FluentNotificationResult>> Send()
         {
-            List<Task<NotificationResult>> notificationResults = new List<Task<NotificationResult>>();
+            List<Task<FluentNotificationResult>> notificationResults = new List<Task<FluentNotificationResult>>();
 
             Options.EmailOptions?.ActiveVendors?.ForEach(active =>
             {
@@ -59,6 +60,13 @@ namespace FluentNotificationSender
             });
 
             Options.SMSOptions?.ActiveVendors?.ForEach(active =>
+            {
+                if (active.Messages?.Count > 0)
+                    notificationResults.AddRange(active.SendAsync());
+            });
+
+
+            Options.MobileOptions?.ActiveVendors?.ForEach(active =>
             {
                 if (active.Messages?.Count > 0)
                     notificationResults.AddRange(active.SendAsync());
@@ -102,15 +110,20 @@ namespace FluentNotificationSender
             return notification;
         }
 
-        //public INotificationService WithMobile(EmailVendor emailVendor, EmailMessage message)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public IFluentNotificationService WithMobilePushNotification(MobilePushNotificationVendor mobileVendor, Message message)
+        {
+            var notification = this.DeepClone();
+            mobileVendor.SafeAdd(message);
+            notification?.Options?.MobileOptions?.SafeAddActiveVendor(mobileVendor);
+            return notification;
+        }
 
-        //public INotificationService WithMobile(EmailMessage message)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public IFluentNotificationService WithMobilePushNotification(Message message)
+        {
+            var notification = this.DeepClone();
+            notification?.Options?.MobileOptions?.ActiveVendors?.FirstOrDefault()?.SafeAdd(message);
+            return notification;
+        }
 
         //public INotificationService WithWeb(EmailVendor emailVendor, EmailMessage message)
         //{

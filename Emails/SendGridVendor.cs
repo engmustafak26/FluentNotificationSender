@@ -32,11 +32,11 @@ namespace FluentNotificationSender.Emails
         public string FromEmail { get; set; }
         public string FromName { get; set; }
         public string ApiKey { get; set; }
-        internal override Task<NotificationResult>[] SendAsync()
+        internal override Task<FluentNotificationResult>[] SendAsync()
         {
 
 
-            var notificationResults = new Task<NotificationResult>[Messages.Count];
+            var notificationResults = new Task<FluentNotificationResult>[Messages.Count];
             for (int i = 0; i < Messages.Count; i++)
             {
                 var message = Messages[i];
@@ -89,9 +89,9 @@ namespace FluentNotificationSender.Emails
                                                    var vendor = new SendGridVendor(FromEmail, FromName, "***", message);
                                                    message = null;
 
-                                                   return r.IsCompletedSuccessfully ? (r.Result.IsSuccessStatusCode ? NotificationResult.Success(vendor, requestOn) :
-                                                                                      NotificationResult.Fail(vendor, requestOn, new Exception(r.Result.Body.ReadAsStringAsync().Result))) :
-                                                                                      NotificationResult.Fail(vendor, requestOn, r.Exception);
+                                                   return r.IsCompletedSuccessfully ? (r.Result.IsSuccessStatusCode ? FluentNotificationResult.Success(vendor, requestOn) :
+                                                                                      FluentNotificationResult.Fail(vendor, requestOn, new Exception(r.Result.Body.ReadAsStringAsync().Result))) :
+                                                                                      FluentNotificationResult.Fail(vendor, requestOn, r.Exception);
                                                });
 
             }

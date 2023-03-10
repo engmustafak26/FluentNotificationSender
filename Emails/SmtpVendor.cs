@@ -33,11 +33,11 @@ namespace FluentNotificationSender.Emails
         public string UserName { get; set; }
         public string Password { get; set; }
         public bool UseSSL { get; set; }
-        internal override Task<NotificationResult>[] SendAsync()
+        internal override Task<FluentNotificationResult>[] SendAsync()
         {
 
 
-            var notificationResults = new Task<NotificationResult>[Messages.Count];
+            var notificationResults = new Task<FluentNotificationResult>[Messages.Count];
             for (int i = 0; i < Messages.Count; i++)
             {
                 var message = Messages[i];
@@ -88,8 +88,8 @@ namespace FluentNotificationSender.Emails
                                                    var vendor = new SmtpVendor(Server, Port, UserName, "***", UseSSL, message);
                                                    message = null;
 
-                                                   return r.IsCompletedSuccessfully ? NotificationResult.Success(vendor, requestOn) :
-                                                                                      NotificationResult.Fail(vendor, requestOn, r.Exception);
+                                                   return r.IsCompletedSuccessfully ? FluentNotificationResult.Success(vendor, requestOn) :
+                                                                                      FluentNotificationResult.Fail(vendor, requestOn, r.Exception);
                                                });
 
             }

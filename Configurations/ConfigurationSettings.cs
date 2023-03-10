@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentNotificationSender.Abstractions;
+using FluentNotificationSender.MobileNotifications;
 
 namespace FluentNotificationSender.Configurations
 {
@@ -12,6 +13,7 @@ namespace FluentNotificationSender.Configurations
         public int RetryCount { get; internal set; }
         public EmailConfiguration Email { get; set; }
         public SMSConfiguration SMS { get; set; }
+        public MobilePushNotificationConfiguration Mobile { get; set; }
 
         internal void Map(NotificationOptions notificationOptions)
         {
@@ -29,6 +31,14 @@ namespace FluentNotificationSender.Configurations
                 notificationOptions.SMSOptions.Vendors.Clear();
                 notificationOptions.SMSOptions.Vendors.AddRange(this.SMS.Unifonic);
                 notificationOptions.SMSOptions.SafeAddActiveVendor(notificationOptions.SMSOptions.Vendors.OrderBy(v => v.UseAsDefault ? 0 : 1).FirstOrDefault());
+            }
+
+            if (Mobile?.IsSectionExist is true)
+            {
+                notificationOptions.MobileOptions = notificationOptions.MobileOptions ?? new NotificationMethodOptions<MobilePushNotificationVendor>();
+                notificationOptions.MobileOptions.Vendors.Clear();
+                notificationOptions.MobileOptions.Vendors.AddRange(this.Mobile.Firebase);
+                notificationOptions.MobileOptions.SafeAddActiveVendor(notificationOptions.MobileOptions.Vendors.OrderBy(v => v.UseAsDefault ? 0 : 1).FirstOrDefault());
             }
 
         }

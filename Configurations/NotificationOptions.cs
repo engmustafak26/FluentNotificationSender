@@ -13,11 +13,13 @@ namespace FluentNotificationSender.Configurations
         private const string SettingSection = "FluentNotification";
         public NotificationMethodOptions<EmailVendor> EmailOptions { get; internal set; }
         public NotificationMethodOptions<SMSVendor> SMSOptions { get; internal set; }
+        public NotificationMethodOptions<MobilePushNotificationVendor> MobileOptions { get; internal set; }
         public int RetryCount { get; internal set; }
         internal IEnumerable<INotificationMethod> GetAllNotificationMethods(Func<INotificationMethod, bool> where = null)
         {
             var emailVendors = EmailOptions?.Vendors ?? Enumerable.Empty<EmailVendor>();
             var smsVendors = SMSOptions?.Vendors ?? Enumerable.Empty<SMSVendor>();
+            var mobileVendors = MobileOptions?.Vendors ?? Enumerable.Empty<MobilePushNotificationVendor>();
 
             List<INotificationMethod> notifications = new List<INotificationMethod>(emailVendors.Count() + smsVendors.Count());
             notifications.AddRange(emailVendors);

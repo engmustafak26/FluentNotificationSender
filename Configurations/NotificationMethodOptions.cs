@@ -21,6 +21,10 @@ namespace FluentNotificationSender.Configurations
         [JsonIgnore]
         internal T[] ActiveVendors => Vendors.Where(v => v.IsActive).ToArray();
 
+        public AutoRetryAnotherVendor AutoRetryAnotherVendor { get; set; }
+
+        public int? RetryCount { get; set; }
+
         internal void SafeAddActiveVendor(T vendor)
         {
             vendor.IsActive = true;
@@ -29,6 +33,20 @@ namespace FluentNotificationSender.Configurations
                 return;
 
             Vendors.Add(vendor);
+        }
+
+        internal void SafeAddActiveVendorOrSetToActiveIfExist(T vendor)
+        {
+            vendor.IsActive = true;
+            var matchedVendor = Vendors.FirstOrDefault(v => v.GlobalIndex == vendor.GlobalIndex);
+
+            if (matchedVendor == null)
+            {
+                Vendors.Add(vendor);
+                return;
+            }
+
+            Vendors[Vendors.IndexOf(matchedVendor)] = vendor;
         }
 
     }

@@ -11,6 +11,9 @@ namespace FluentNotificationSender.Configurations
         {
             Firebase = new List<FirebaseVendor>();
         }
+        public AutoRetryAnotherVendor AutoRetryAnotherVendor { get; set; }
+
+        public int? RetryCount { get; set; }
         public List<FirebaseVendor> Firebase { get; set; }
 
         public bool IsSectionExist => Firebase.Any();

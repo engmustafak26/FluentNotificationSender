@@ -13,7 +13,7 @@ namespace FluentNotificationSender.Emails
 {
     public sealed class SendGridVendor : EmailVendor
     {
-        private const string SendGridEmptyTemplate= " ";
+        private const string SendGridEmptyTemplate = " ";
         public SendGridVendor()
         {
 
@@ -32,25 +32,30 @@ namespace FluentNotificationSender.Emails
         public string FromEmail { get; set; }
         public string FromName { get; set; }
         public string ApiKey { get; set; }
+
+        internal override void SupressSensitiveInfo()
+        {
+            this.ApiKey = SupressString;
+        }
         internal override Task<FluentNotificationResult>[] SendAsync()
         {
 
-
-            var notificationResults = new Task<FluentNotificationResult>[Messages.Count];
-            for (int i = 0; i < Messages.Count; i++)
+            var canRetryMessages = Messages.Where(x => x.CanRetry).ToArray();
+            var notificationResults = new Task<FluentNotificationResult>[canRetryMessages.Length];
+            for (int i = 0; i < canRetryMessages.Length; i++)
             {
-                var message = Messages[i];
+                var message = canRetryMessages[i];
 
                 var client = new SendGridClient(ApiKey);
                 var mailMessage = new SendGridMessage()
                 {
                     From = new EmailAddress(FromEmail, FromName),
                     Subject = message.Subject,
-                    PlainTextContent = message.Body?? SendGridEmptyTemplate
+                    PlainTextContent = message.Body ?? SendGridEmptyTemplate
                 };
                 if (message.IsHtmlBody)
                 {
-                    mailMessage.HtmlContent = message.Body?? SendGridEmptyTemplate;
+                    mailMessage.HtmlContent = message.Body ?? SendGridEmptyTemplate;
                 }
 
 
@@ -83,15 +88,23 @@ namespace FluentNotificationSender.Emails
                                                    client = null;
                                                    message.Attachments?.ForEach(a =>
                                                    {
-                                                       if (a is MemoryAttachment memoryAttachment)
-                                                           memoryAttachment.ResetContent();
+                                                       //if (a is MemoryAttachment memoryAttachment)
+                                                       //    memoryAttachment.ResetContent();
                                                    });
-                                                   var vendor = new SendGridVendor(FromEmail, FromName, "***", message);
-                                                   message = null;
 
-                                                   return r.IsCompletedSuccessfully ? (r.Result.IsSuccessStatusCode ? FluentNotificationResult.Success(vendor, requestOn) :
-                                                                                      FluentNotificationResult.Fail(vendor, requestOn, new Exception(r.Result.Body.ReadAsStringAsync().Result))) :
-                                                                                      FluentNotificationResult.Fail(vendor, requestOn, r.Exception);
+                                                   var baseResult = r.IsCompletedSuccessfully ? (r.Result.IsSuccessStatusCode ? FluentNotificationResult.Success(this, requestOn) :
+                                                                                      FluentNotificationResult.Fail(this, requestOn, new Exception(r.Result.Body.ReadAsStringAsync().Result))) :
+                                                                                      FluentNotificationResult.Fail(this, requestOn, r.Exception);
+
+
+                                                   message.SafeAddResult(baseResult, this);
+
+                                                   var vendor = new SendGridVendor(FromEmail, FromName, ApiKey, message);
+                                                   vendor.SupressSensitiveInfo();
+
+
+                                                   return FluentNotificationResult
+                                                                                .FromNotificationResult(baseResult, vendor);
                                                });
 
             }
@@ -99,6 +112,8 @@ namespace FluentNotificationSender.Emails
             return notificationResults.ToArray();
 
         }
+
+
     }
 }
 

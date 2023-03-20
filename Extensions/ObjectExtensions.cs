@@ -11,6 +11,7 @@ namespace FluentNotificationSender.Extensions
         static JsonSerializerSettings serializerSettings = new JsonSerializerSettings()
         {
             TypeNameHandling = TypeNameHandling.All,
+            ReferenceLoopHandling=ReferenceLoopHandling.Ignore,
             ContractResolver = new JsonBindNonPublicPropertiesContractResolver()
         };
 

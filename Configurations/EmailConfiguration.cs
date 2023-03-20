@@ -11,6 +11,8 @@ namespace FluentNotificationSender.Configurations
             Smtp = new List<SmtpVendor>();
             SendGrid = new List<SendGridVendor>();
         }
+        public AutoRetryAnotherVendor AutoRetryAnotherVendor { get; set; }
+        public int? RetryCount { get; set; }
         public List<SmtpVendor> Smtp { get; set; }
         public List<SendGridVendor> SendGrid { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FluentNotificationSender.Abstractions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FluentNotificationSender.Emails
 {
-    public class EmailMessage
+    public class EmailMessage : MessagBase
     {
         public IEnumerable<string> To { get; private set; }
         public IEnumerable<string> CC { get; private set; }

@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using FluentNotificationSender.Abstractions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace FluentNotificationSender.SMS
 {
-    public class SMSMessage
+    public sealed class SMSMessage : MessagBase
     {
         [JsonConstructor]
         public SMSMessage(string mobileNumber, string message)

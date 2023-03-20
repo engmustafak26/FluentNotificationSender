@@ -15,6 +15,9 @@ namespace FluentNotificationSender.Extensions
         {
             NotificationOptions options = new NotificationOptions();
             configure(options);
+            options.ConfigureAndValidate();
+
+            NotificationOptionsSingeltonWrapper.SetNotificationOptions(options);
 
             var descriptor = services.FirstOrDefault(s => s.ServiceType == typeof(Func<NotificationOptions, IFluentNotificationService>));
             if (descriptor != null) services.Remove(descriptor);

@@ -10,22 +10,13 @@ using FluentNotificationSender.SMS;
 
 namespace FluentNotificationSender.Abstractions
 {
-    public abstract class SMSVendor : Vendor, ISMSNotificationMethod
+    public abstract class SMSVendor : Vendor<SMSMessage>, ISMSNotificationMethod
     {
         private protected SMSVendor()
         {
         }
 
         internal abstract override Task<FluentNotificationResult>[] SendAsync();
-
-        [JsonProperty]
-        internal List<SMSMessage> Messages { get; set; }
-        internal void SafeAdd(SMSMessage message)
-        {
-            Messages = Messages ?? new List<SMSMessage>();
-            Messages.Add(message);
-        }
-
 
     }
 }

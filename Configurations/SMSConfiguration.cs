@@ -10,6 +10,9 @@ namespace FluentNotificationSender.Configurations
         {
             Unifonic = new List<UnifonicVendor>();
         }
+        public AutoRetryAnotherVendor AutoRetryAnotherVendor { get; set; }
+
+        public int? RetryCount { get; set; }
         public List<UnifonicVendor> Unifonic { get; set; }
 
         public bool IsSectionExist => Unifonic.Any();

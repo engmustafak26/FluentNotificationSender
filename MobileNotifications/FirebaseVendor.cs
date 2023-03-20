@@ -53,7 +53,7 @@ namespace FluentNotificationSender.MobileNotifications
         }
         internal FirebaseVendor(string type, string project_Id, string private_Key_Id, string private_Key, string client_Email,
                                  string client_Id, string auth_Uri, string token_Uri, string auth_Provider_X509_Cert_Url,
-                                 string client_X509_Cert_Url, Message message) : this(type, project_Id, private_Key_Id, private_Key, client_Email,
+                                 string client_X509_Cert_Url, MobileNotificationMessage message) : this(type, project_Id, private_Key_Id, private_Key, client_Email,
                                                                                         client_Id, auth_Uri, token_Uri, auth_Provider_X509_Cert_Url, client_X509_Cert_Url)
         {
             SafeAdd(message);
@@ -72,40 +72,70 @@ namespace FluentNotificationSender.MobileNotifications
         public string Client_X509_Cert_Url { get; set; }
 
 
+        internal override void SupressSensitiveInfo()
+        {
+            this.Private_Key_Id = SupressString;
+            this.Private_Key = SupressString;
+        }
+
         internal override Task<FluentNotificationResult>[] SendAsync()
         {
 
             var app = FirebaseApp.Create(new AppOptions()
             {
-                Credential = GoogleCredential.FromJson(JsonConvert.SerializeObject(this)),
+                Credential = GoogleCredential.FromJson(JsonConvert.SerializeObject(this, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                })),
             }, name: Guid.NewGuid().ToString());
             var requestOn = DateTime.Now;
-            return FirebaseMessaging.GetMessaging(app).SendAllAsync(Messages)
+
+            var canRetryMessages = Messages.Where(x => x.CanRetry).ToArray();
+            var firbaseMessages = canRetryMessages?.Select(x => new Message
+            {
+                Token = x.Token,
+                Topic = x.Topic,
+                Android = x.Android,
+                Apns = x.Apns,
+                Condition = x.Condition,
+                Data = x.Data,
+                FcmOptions = x.FcmOptions,
+                Notification = x.Notification,
+                Webpush = x.Webpush
+            });
+            if (!firbaseMessages.Any())
+            {
+                return new Task<FluentNotificationResult>[0];
+            }
+            return FirebaseMessaging.GetMessaging(app).SendAllAsync(firbaseMessages)
                                                .ContinueWith(n =>
                                                {
                                                    app.Delete();
                                                    app = null;
-                                                   var notificationResults = new Task<FluentNotificationResult>[Messages.Count];
+                                                   var notificationResults = new Task<FluentNotificationResult>[canRetryMessages.Length];
                                                    int index = 0;
                                                    foreach (var response in n.Result.Responses)
                                                    {
-                                                       var vendor = new FirebaseVendor(this.Type, this.Project_Id, "***", "***", this.Client_Email, "***", this.Auth_Uri,
-                                                                                                this.Token_Uri, this.Auth_Provider_X509_Cert_Url, this.Client_X509_Cert_Url, Messages[index]);
-                                                       Messages[index] = null;
+                                                       var baseResult = GetNotificationResponse(n, response);
+                                                       canRetryMessages[index].SafeAddResult(baseResult, this);
 
-                                                       notificationResults[index] = Task.FromResult(GetNotificationResponse(n, response, vendor));
+                                                       var vendor = new FirebaseVendor(this.Type, this.Project_Id, Private_Key_Id, Private_Key, this.Client_Email, "***", this.Auth_Uri,
+                                                                                     this.Token_Uri, this.Auth_Provider_X509_Cert_Url, this.Client_X509_Cert_Url, canRetryMessages[index]);
+                                                       vendor.SupressSensitiveInfo();
+
+                                                       notificationResults[index] = Task.FromResult(FluentNotificationResult
+                                                                                                            .FromNotificationResult(baseResult, vendor));
                                                        index++;
-
                                                    }
                                                    return notificationResults;
 
                                                }).Result;
 
-            FluentNotificationResult GetNotificationResponse(Task<BatchResponse> responseTask, SendResponse response, FirebaseVendor vendor)
+            FluentNotificationResult GetNotificationResponse(Task<BatchResponse> responseTask, SendResponse response)
             {
                 if (!responseTask.IsCompletedSuccessfully)
-                    return FluentNotificationResult.Fail(vendor, requestOn, response.Exception);
-                return response.IsSuccess ? FluentNotificationResult.Success(vendor, requestOn) : FluentNotificationResult.Fail(vendor, requestOn, response.Exception);
+                    return FluentNotificationResult.Fail(this, requestOn, response.Exception);
+                return response.IsSuccess ? FluentNotificationResult.Success(this, requestOn) : FluentNotificationResult.Fail(this, requestOn, response.Exception);
 
             }
 

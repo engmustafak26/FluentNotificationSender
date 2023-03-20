@@ -9,14 +9,13 @@ using FluentNotificationSender.Interfaces;
 
 namespace FluentNotificationSender.Abstractions
 {
-    public abstract class EmailVendor : Vendor<EmailMessage>, IEmailNotificationMethod
+    public abstract class MessagBase : MessageRetry
     {
-        private protected EmailVendor()
+        private protected MessagBase()
         {
         }
 
-        internal abstract override Task<FluentNotificationResult>[] SendAsync();
-
+        internal string Id { get; set; }    
 
 
     }

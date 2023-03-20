@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,12 @@ namespace FluentNotificationSender.SMS
             SenderID = senderID;
         }
 
+        internal override void SupressSensitiveInfo()
+        {
+            this.AppSid = SupressString;
+            this.SenderID = SupressString;
+        }
+
         internal UnifonicVendor(string aPIUrl, string appSid, string senderID, SMSMessage message) : this(aPIUrl, appSid, senderID)
         {
             SafeAdd(message);
@@ -30,11 +37,12 @@ namespace FluentNotificationSender.SMS
 
         internal override Task<FluentNotificationResult>[] SendAsync()
         {
-            var notificationResults = new Task<FluentNotificationResult>[Messages.Count];
+            var canRetryMessages = Messages.Where(x => x.CanRetry).ToArray();
+            var notificationResults = new Task<FluentNotificationResult>[canRetryMessages.Length];
 
-            for (int i = 0; i < Messages.Count; i++)
+            for (int i = 0; i < canRetryMessages.Length; i++)
             {
-                var message = Messages[i];
+                var message = canRetryMessages[i];
                 HttpClient client = new HttpClient();
                 string fullUrl = $"{APIUrl}?AppSid={AppSid}&SenderID={SenderID}&Body={message.Message}&Recipient={message.MobileNumber}";
                 var requestOn = DateTime.Now;
@@ -43,15 +51,24 @@ namespace FluentNotificationSender.SMS
                     client?.Dispose();
                     client = null;
 
-                    var vendor = new UnifonicVendor(APIUrl, AppSid, SenderID, message);
-                    message = null;
-
-                    if (r.IsCompletedSuccessfully)
+                    UnifonicVendor vendor = null;
+                    FluentNotificationResult baseResult = null;
+                    if (r.IsCompletedSuccessfully && r.Result.IsSuccessStatusCode)
                     {
                         string response = await (await r).Content.ReadAsStringAsync();
-                        return FluentNotificationResult.Success(vendor, requestOn, response);
+                        baseResult = FluentNotificationResult.Success(this, requestOn, response);
+                        message.SafeAddResult(baseResult, this);
+                        vendor = new UnifonicVendor(APIUrl, AppSid, SenderID, message);
+                        vendor.SupressSensitiveInfo();
+
+                        return FluentNotificationResult.FromNotificationResult(baseResult, vendor);
                     }
-                    return FluentNotificationResult.Fail(vendor, requestOn, r.Exception);
+                    baseResult = FluentNotificationResult.Fail(this, requestOn, r.Exception);
+                    message.SafeAddResult(baseResult, this);
+                    vendor = new UnifonicVendor(APIUrl, AppSid, SenderID, message);
+                    vendor.SupressSensitiveInfo();
+
+                    return FluentNotificationResult.FromNotificationResult(baseResult, vendor);
 
                 }).ContinueWith(r => r.Result.Result);
             }

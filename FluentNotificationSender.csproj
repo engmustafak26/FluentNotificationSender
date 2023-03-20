@@ -2,7 +2,26 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>netcoreapp3.1;net5.0;net6.0;net7.0</TargetFrameworks>
+		<Title>Fluent Notification Sender</Title>
+		<Authors>MustafaKamalAli</Authors>
+		<Company>DeepTech</Company>
+		<Description>Send mutiple notifications by different methods as "email", "SMS", "Mobile Push Notifications" and different vendors as "SMTP", "SendGrid", "UniFonic", "Firebase"</Description>
+		<Copyright>MIT</Copyright>
+		<RepositoryUrl>https://github.com/engmustafak26/FluentNotificationSender</RepositoryUrl>
+		<PackageIcon>notification.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="C:\Users\mustafa\Downloads\notification.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Include="C:\Users\mustafa\Downloads\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="FirebaseAdmin" Version="2.3.0" />

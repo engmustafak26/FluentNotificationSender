@@ -14,6 +14,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Include="..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	  <None Include="C:\Users\mustafa\Downloads\notification.png">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>

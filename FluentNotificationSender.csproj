@@ -10,14 +10,11 @@
 		<RepositoryUrl>https://github.com/engmustafak26/FluentNotificationSender</RepositoryUrl>
 		<PackageIcon>notification.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageProjectUrl>https://mustafa-kamal26.blogspot.com/2023/03/fluent-notification-sender-net-package.html</PackageProjectUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
 	  <None Include="C:\Users\mustafa\Downloads\notification.png">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
-	  <None Include="C:\Users\mustafa\Downloads\README.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
 	  </None>
@@ -36,6 +33,13 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.32" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="SendGrid" Version="9.28.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 </Project>

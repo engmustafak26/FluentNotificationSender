@@ -11,6 +11,7 @@
 		<PackageIcon>notification.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageProjectUrl>https://mustafa-kamal26.blogspot.com/2023/03/fluent-notification-sender-net-package.html</PackageProjectUrl>
+		<PackageReleaseNotes>Send mutiple notifications by different methods as "email", "SMS", "Mobile Push Notifications" and different vendors as "SMTP", "SendGrid", "UniFonic", "Firebase"</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>

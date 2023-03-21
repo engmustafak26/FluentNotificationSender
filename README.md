@@ -36,6 +36,7 @@ Project Send notifications to client in form of "Email", "SMS", "Mobile Push Not
 ## 🔗 Links
 
 [![github](https://raw.githubusercontent.com/engmustafak26/FluentNotificationSender/master/github-logo.png)](https://github.com/engmustafak26)
+
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mustafa-kamal-ab681875//)
 
 

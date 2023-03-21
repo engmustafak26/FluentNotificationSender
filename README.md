@@ -1,5 +1,5 @@
 
-![Logo](https://www.flaticon.com/download/icon/2058148?icon_id=2058148&author=381&team=381&keyword=Notification&pack=2058111&style=Flat&style_id=6&format=png&color=&colored=2&size=32&selection=1&type=standard&search=notification&search=notification)
+![Logo](https://raw.githubusercontent.com/engmustafak26/FluentNotificationSender/master/notification.png)
 
 
 # Fluent Notification Sender
@@ -35,7 +35,7 @@ Project Send notifications to client in form of "Email", "SMS", "Mobile Push Not
 
 ## 🔗 Links
 
-[![github](https://cdn.iconscout.com/icon/free/png-256/github-1521500-1288242.png?f=webp&w=128)](https://github.com/engmustafak26)
+[![github](https://raw.githubusercontent.com/engmustafak26/FluentNotificationSender/master/github-logo.png)](https://github.com/engmustafak26)
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mustafa-kamal-ab681875//)
 
 

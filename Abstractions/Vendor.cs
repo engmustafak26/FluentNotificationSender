@@ -17,7 +17,7 @@ namespace FluentNotificationSender.Abstractions
         }
 
         [JsonProperty]
-        internal int GlobalIndex { get; set; }
+        public int GlobalIndex { get; set; }
         [JsonIgnore]
         internal bool UseAsDefault { get; set; }
         internal Vendor MutatedCandidateVendor { get; set; }

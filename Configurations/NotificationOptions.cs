@@ -102,21 +102,24 @@ namespace FluentNotificationSender.Configurations
             this.EmailOptions.AutoRetryAnotherVendor = this.EmailOptions.AutoRetryAnotherVendor ?? this.AutoRetryAnotherVendor;
             this.EmailOptions.RetryCount = this.EmailOptions.RetryCount ?? this.RetryCount;
             this.EmailOptions.Vendors.ForEach(x => x.RetryCount = this.EmailOptions.RetryCount);
-            this.EmailOptions.SafeAddActiveVendor(this.EmailOptions.Vendors.OrderBy(v => v.UseAsDefault ? 0 : 1).FirstOrDefault());
+            if (EmailOptions.Vendors.Count > 0)
+                this.EmailOptions.SafeAddActiveVendor(this.EmailOptions.Vendors.OrderBy(v => v.UseAsDefault ? 0 : 1).FirstOrDefault());
 
 
             this.SMSOptions = this.SMSOptions ?? new NotificationMethodOptions<SMSVendor>();
             this.SMSOptions.AutoRetryAnotherVendor = this.SMSOptions.AutoRetryAnotherVendor ?? this.AutoRetryAnotherVendor;
             this.SMSOptions.RetryCount = this.SMSOptions.RetryCount ?? this.RetryCount;
             this.SMSOptions.Vendors.ForEach(x => x.RetryCount = this.SMSOptions.RetryCount);
-            this.SMSOptions.SafeAddActiveVendor(this.SMSOptions.Vendors.OrderBy(v => v.UseAsDefault ? 0 : 1).FirstOrDefault());
+            if (SMSOptions.Vendors.Count > 0)
+                this.SMSOptions.SafeAddActiveVendor(this.SMSOptions.Vendors.OrderBy(v => v.UseAsDefault ? 0 : 1).FirstOrDefault());
 
 
             this.MobileOptions = this.MobileOptions ?? new NotificationMethodOptions<MobilePushNotificationVendor>();
             this.MobileOptions.AutoRetryAnotherVendor = this.MobileOptions.AutoRetryAnotherVendor ?? this.AutoRetryAnotherVendor;
             this.MobileOptions.RetryCount = this.MobileOptions.RetryCount ?? this.RetryCount;
             this.MobileOptions.Vendors.ForEach(x => x.RetryCount = this.MobileOptions.RetryCount);
-            this.MobileOptions.SafeAddActiveVendor(this.MobileOptions.Vendors.OrderBy(v => v.UseAsDefault ? 0 : 1).FirstOrDefault());
+            if (MobileOptions.Vendors.Count > 0)
+                this.MobileOptions.SafeAddActiveVendor(this.MobileOptions.Vendors.OrderBy(v => v.UseAsDefault ? 0 : 1).FirstOrDefault());
 
             if (this.IsGlobalIndexDuplicationExist())
             {

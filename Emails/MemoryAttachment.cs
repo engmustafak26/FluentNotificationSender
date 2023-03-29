@@ -24,7 +24,7 @@ namespace FluentNotificationSender.Emails
 
         public byte[] Content { get; private set; }
         public string Name { get; private set; }
-        public string? MediaType { get; private set; }
+        public string MediaType { get; private set; }
 
         internal void ResetContent()
         {

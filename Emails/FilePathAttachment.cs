@@ -16,6 +16,6 @@ namespace FluentNotificationSender.Emails
         public FilePathAttachment(string fileName) : this(fileName, null) { }
 
         public string FileName { get; private set; }
-        public string? MediaType { get; private set; }
+        public string MediaType { get; private set; }
     }
 }

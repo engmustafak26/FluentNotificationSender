@@ -133,7 +133,7 @@ namespace FluentNotificationSender.MobileNotifications
 
             FluentNotificationResult GetNotificationResponse(Task<BatchResponse> responseTask, SendResponse response)
             {
-                if (!responseTask.IsCompletedSuccessfully)
+                if (!responseTask.IsCompleted)
                     return FluentNotificationResult.Fail(this, requestOn, response.Exception);
                 return response.IsSuccess ? FluentNotificationResult.Success(this, requestOn) : FluentNotificationResult.Fail(this, requestOn, response.Exception);
 

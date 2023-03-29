@@ -43,13 +43,13 @@ namespace FluentNotificationSender
                 if (x.VendorInfo is Vendor<EmailMessage> emailVendor)
                 {
                     emailVendor.Messages
-                               .SelectMany(x => x.Results)
+                               .SelectMany(y => y.Results)
                                .ToArray()
-                               .ForEach(x =>
+                               .ForEach(z =>
                                {
-                                   x.VendorInfo.SupressSensitiveInfo();
-                                   x.VendorInfo.ClearMessages();
-                                   SuccessNotificationsSent += x.IsSuccess ? 1 : 0;
+                                   z.VendorInfo.SupressSensitiveInfo();
+                                   z.VendorInfo.ClearMessages();
+                                   SuccessNotificationsSent += z.IsSuccess ? 1 : 0;
                                    TotalNotificationsSent++;
                                });
                     lastResultBase = emailVendor.Messages.LastOrDefault().Results.LastOrDefault();
@@ -57,13 +57,13 @@ namespace FluentNotificationSender
                 else if (x.VendorInfo is Vendor<SMSMessage> smsVendor)
                 {
                     smsVendor.Messages
-                            .SelectMany(x => x.Results)
+                            .SelectMany(y => y.Results)
                             .ToArray()
-                            .ForEach(x =>
+                            .ForEach(z =>
                             {
-                                x.VendorInfo.SupressSensitiveInfo();
-                                x.VendorInfo.ClearMessages();
-                                SuccessNotificationsSent += x.IsSuccess ? 1 : 0;
+                                z.VendorInfo.SupressSensitiveInfo();
+                                z.VendorInfo.ClearMessages();
+                                SuccessNotificationsSent += z.IsSuccess ? 1 : 0;
                                 TotalNotificationsSent++;
                             });
                     lastResultBase = smsVendor.Messages.LastOrDefault().Results.LastOrDefault();
@@ -71,13 +71,13 @@ namespace FluentNotificationSender
                 else if (x.VendorInfo is Vendor<MobileNotificationMessage> mobileVendor)
                 {
                     mobileVendor.Messages
-                                .SelectMany(x => x.Results)
+                                .SelectMany(y => y.Results)
                                 .ToArray()
-                                .ForEach(x =>
+                                .ForEach(z =>
                                 {
-                                    x.VendorInfo.SupressSensitiveInfo();
-                                    x.VendorInfo.ClearMessages();
-                                    SuccessNotificationsSent += x.IsSuccess ? 1 : 0;
+                                    z.VendorInfo.SupressSensitiveInfo();
+                                    z.VendorInfo.ClearMessages();
+                                    SuccessNotificationsSent += z.IsSuccess ? 1 : 0;
                                     TotalNotificationsSent++;
                                 });
                     lastResultBase = mobileVendor.Messages.LastOrDefault().Results.LastOrDefault();

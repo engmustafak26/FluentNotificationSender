@@ -53,7 +53,7 @@ namespace FluentNotificationSender.SMS
 
                     UnifonicVendor vendor = null;
                     FluentNotificationResult baseResult = null;
-                    if (r.IsCompletedSuccessfully && r.Result.IsSuccessStatusCode)
+                    if (r.IsCompleted && r.Result.IsSuccessStatusCode)
                     {
                         string response = await (await r).Content.ReadAsStringAsync();
                         baseResult = FluentNotificationResult.Success(this, requestOn, response);

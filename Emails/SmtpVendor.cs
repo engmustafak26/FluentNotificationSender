@@ -91,7 +91,7 @@ namespace FluentNotificationSender.Emails
                                                        //memoryAttachment.ResetContent();
                                                    });
 
-                                                   var baseResult = r.IsCompleted ? FluentNotificationResult.Success(this, requestOn) :
+                                                   var baseResult = r.IsCompleted && r.Status == TaskStatus.RanToCompletion ? FluentNotificationResult.Success(this, requestOn) :
                                                                                      FluentNotificationResult.Fail(this, requestOn, r.Exception);
 
                                                    message.SafeAddResult(baseResult, this);

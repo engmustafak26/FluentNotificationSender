@@ -38,6 +38,7 @@ namespace FluentNotificationSender.Configurations
                 notificationOptions.SMSOptions.AutoRetryAnotherVendor = this.SMS.AutoRetryAnotherVendor;
                 notificationOptions.SMSOptions.Vendors.Clear();
                 notificationOptions.SMSOptions.Vendors.AddRange(this.SMS.Unifonic);
+                notificationOptions.SMSOptions.Vendors.AddRange(this.SMS.Twilio);
             }
 
             if (Mobile?.IsSectionExist is true)
